@@ -1,6 +1,6 @@
 #include "Max-Back.h"
 
-double MaxBack(vvd &G, vector<int> &So, vvi &x, vector<int> &grau, int V, pair<int,int> &vf) {
+double MaxBack(const vvd &G, vector<int> &So, const vvb &x, vector<int> &grau, int V, pair<int,int> &vf) {
     vector<double> maxback_val(V+1);    // quanto cada vértice recebe dos vértices pertencentes ao subconjunto
     vector<bool> Vrestante(V+1, true);  // V\So
     Vrestante[0] = false;               // indexando em 1
@@ -67,7 +67,7 @@ double MaxBack(vvd &G, vector<int> &So, vvi &x, vector<int> &grau, int V, pair<i
     return mincut_val;
 }
 
-vvi MaxBackM(vvd &G, vvi &x, vector<int> &grau) {
+vvi MaxBackM(const vvd &G, const vvb &x, vector<int> &grau) {
     int n = x.size();
     pair<int,int> st;
     vvi S;
