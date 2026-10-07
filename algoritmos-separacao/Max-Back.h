@@ -3,13 +3,14 @@
 
 #include <vector>
 #include <algorithm>
+// #include <utility>
 
 using namespace std;
 typedef vector<vector<double>> vvd;
 typedef vector<vector<bool>> vvb;
 typedef vector<vector<int>> vvi;
 
-double MaxBack(vvd &, vector<int> &, vvi &, vector<int> &, int , int &);
+double MaxBack(vvd &, vector<int> &, vvi &, vector<int> &, int , int &, pair<int,int> &);
 vvi MaxBackM(vvb &);
 
 #endif
