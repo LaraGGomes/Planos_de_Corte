@@ -10,7 +10,7 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, vector<int> &grau, i
 
         for(int i : So) {
             Vrestante[i] = false;
-            soma += (G[i][j]*x[i][j]);
+            soma += (G[i][j]*x[i][j]);  // verificar dps se ele multiplica por 1 (ou se ta * true)
         }
 
         maxback_val[j] = soma;
@@ -84,7 +84,7 @@ vvi MaxBackM(const vvd &G, const vvb &x, vector<int> &grau) {
             }
         }
 
-        if (!v) break;
+        if (!v) break;  // todos os vértices foram visitadoss
 
         vector<int> Sk = {v};
 
@@ -92,7 +92,7 @@ vvi MaxBackM(const vvd &G, const vvb &x, vector<int> &grau) {
 
         S.push_back(Sk);
 
-        for(int vertice : Sk) vis[vertice] = true;
+        for(int vertice : Sk) vis[vertice] = true;  // adicionando vértices do subconjunto encontrado nos visitados
     }
 
     return S;

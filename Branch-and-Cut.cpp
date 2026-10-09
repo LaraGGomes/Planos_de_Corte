@@ -8,7 +8,7 @@ vector<bool> Soluciona() {
         Acho que é uma boa ler cada variável binária e armazenar
         numa matriz de adjacência do grafo ótimo para o TSPinit, para o
         acesso ficar em tempo constante.
-        Então o retorno em si fica como vector<vector<bool>>.
+        Então o retorno em si fica como vector<vector<bool>>, indexado em 1.
 
         Pensando também na descrição das variáveis binárias na matriz
         ir preenchendo um vetor de grau de cada vértice (indexado em 1).

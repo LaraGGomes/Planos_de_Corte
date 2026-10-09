@@ -12,6 +12,8 @@ int main(int argc, char** argv) {
 
     size_t n = data.getDimension();
 
+    // Grafo G vai estar indexado em 1
+
 	vvd cost(n, vector<double>(n));
 	for (int i = 0; i < n; i++){
 		for (int j = 0; j < n; j++){
