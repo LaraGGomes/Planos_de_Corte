@@ -6,7 +6,7 @@
 
 #define INF numeric_limits<int>::max()
 
-double SimpleMinCut(const vvd &, vvb &, vector<int> &);
-void Shrink(vvd &, vector<bool> &);
+double SimpleMinCut(vvd &, vvb &, vector<int> &, vector<int> &);
+void Shrink(vvd &, vector<bool> &, pair<int,int> &);
 
 #endif
