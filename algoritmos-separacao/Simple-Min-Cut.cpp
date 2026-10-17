@@ -23,7 +23,7 @@ double SimpleMinCut(vvd &G, vvb &x, vector<int> &graus, vector<int> &S) {
 void Shrink(vvd &G, vvb & x, pair<int,int> &st) {
     int V = x.size();
 
-    vvd Vnew(V-1, vector<double>(V-1));
+    vvd Vnew(V+1, vector<double>(V+1));     // 1-indexado
     int v1 = st.first;
     int v2 = st.second;
 
@@ -35,21 +35,21 @@ void Shrink(vvd &G, vvb & x, pair<int,int> &st) {
 
         vector<double> E;
 
-        if(i == v1) {           // se for v1 precio somar com v2 nos valores das arestas
+        if(i == v1) {           // se for v1 preciso somar com v2 nos valores das arestas
             for(int j = 1; j <= V; j++) {
                 if (j == i) E.push_back(0);     // identidade
                 else {
-                    if (j == v2) j++;           // pular v2
-                    if (j <= V) E.push_back(G[v1][j] + G[v2][j]);
+                    if (j == v2) continue;           // pular v2
+                    E.push_back(G[v1][j] + G[v2][j]);
                 }
             }
         }
         else {
             for(int j = 1; j <= V; j++) {
-                if (j == v1) E.push_back(G[i][j] + G[i][v2]);
+                if (j == v1) E.push_back(G[i][v1] + G[i][v2]);
                 else {
-                    if (j == v2) j++;
-                    if (j <= V) E.push_back(G[i][j]);   // não tem v1 nem v2 envolvido
+                    if (j == v2) continue;
+                    E.push_back(G[i][j]);   // não tem v1 nem v2 envolvido
                 }
             }
         }
@@ -58,7 +58,7 @@ void Shrink(vvd &G, vvb & x, pair<int,int> &st) {
     }
     
     // nova soluçaõ x*
-    vvb xNew(V-1, vector<bool>(V-1));
+    vvb xNew(V+1, vector<bool>(V+1));
     for(int i = 1; i <= V; i++) {
         if(i == v2) continue;
 
@@ -66,16 +66,17 @@ void Shrink(vvd &G, vvb & x, pair<int,int> &st) {
         
         if (i == v1) {
             for(int j = 1; j <= V; j++) {
-                if(j == v2) j++;
-
-                if(j <= V) xlinha.push_back( (x[v1][j] || x[v2][j]) ? 1 : 0 );  // se x[v1][j] ou x[v2][j] == true, então true
+                if(j == v2) continue;
+                xlinha.push_back(x[v1][j] || x[v2][j]);  // se x[v1][j] ou x[v2][j] == true, então true
             }
         }
         else {
             for(int j = 1; j <= V; j++) {
-                if(j == v2) j++;
-
-                if(j <= V) xlinha.push_back(x[i][j]);
+                if (j == v1) xlinha.push_back(x[i][v1] || x[i][v2]);
+                else {
+                    if (j == v2) continue;
+                    xlinha.push_back(x[i][j]);
+                }
             }
         }
 

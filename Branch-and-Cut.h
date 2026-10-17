@@ -3,11 +3,12 @@
 
 #include <ilcplex/cplex.h>
 #include <ilcplex/ilocplex.h>
-#include <vector>
+#include "Max-Back.h"
+#include <numeric>
 
 using namespace std;
 
-vector<bool> Soluciona();
+vector<bool> Soluciona(vvd &G, int V);
 double CuttingPlanes();
 
 #endif
