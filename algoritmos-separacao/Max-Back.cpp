@@ -43,7 +43,7 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, vector<int> &grau, i
         Vrestante[i] = false;
 
         // mudanças nos valores de corte e maxbacks com a adição do vértice
-        cut_val += grau[i] - (2* maxback_val[i]);
+        cut_val += grau[i] - (2* maxback_val[i]);   // to achando que o grau do vértice é fixo em 2 viu
 
         for (int j = 1; j <= V; j++) {
             if(Vrestante[j])
@@ -65,6 +65,8 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, vector<int> &grau, i
     // O subconjunto tá sendo retornado no próprio conjunto inicial (So)
 
     return mincut_val;
+
+    // Retorna o valor do corte mínimo, o subconjunto e os últimos dois vértices adicionados
 }
 
 vvi MaxBackM(const vvd &G, const vvb &x, vector<int> &grau) {

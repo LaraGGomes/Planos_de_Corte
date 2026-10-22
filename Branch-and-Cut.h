@@ -8,7 +8,7 @@
 
 using namespace std;
 
-vector<bool> Soluciona(vvd &G, int V);
-double CuttingPlanes();
+vector<bool> Soluciona(vvd &G, int V, vvi &restricoes);
+double CuttingPlanes(vvd &G, int V);
 
 #endif
