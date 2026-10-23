@@ -3,12 +3,12 @@
 
 #include <ilcplex/cplex.h>
 #include <ilcplex/ilocplex.h>
-#include "Max-Back.h"
+#include "algoritmos-separacao/Max-Back.h"
 #include <numeric>
 
 using namespace std;
 
-vector<bool> Soluciona(vvd &G, int V, vvi &restricoes);
-double CuttingPlanes(vvd &G, int V);
+vvb Soluciona(vvd &, int, vvi &);
+double CuttingPlanes(vvd &, int );
 
 #endif

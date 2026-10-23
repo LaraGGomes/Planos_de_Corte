@@ -1,9 +1,12 @@
 #include <iostream>
 #include "leitor-instancias/src/Data.h"
-#include <vector>
+#include "Branch-and-Cut.h"
+#include <limits>
 
 using namespace std;
-typedef vector<vector<double>> vvd;
+// typedef vector<vector<double>> vvd;
+
+#define INF numeric_limits<int>::max()
 
 int main(int argc, char** argv) {
 
@@ -12,14 +15,20 @@ int main(int argc, char** argv) {
 
     size_t n = data.getDimension();
 
-    // Grafo G vai estar indexado em 1
+    // Grafo G vai estar indexado em 1 <- mudando de ideia sobre isso aq
 
 	vvd cost(n, vector<double>(n));
 	for (int i = 0; i < n; i++){
-		for (int j = 0; j < n; j++){
-            cost[i][j] = data.getDistance(i+1,j+1);
+        cost[i][i] = INF;
+		for (int j = i+1; j < n; j++){
+            double c = data.getDistance(i+1, j+1);
+            cost[i][j] = cost[j][i] = c;
 		}
 	}
+
+    cout << "INF = " << INF << endl;
+
+    // Soluciona(cost, n, {});
 
     return 0;
 }

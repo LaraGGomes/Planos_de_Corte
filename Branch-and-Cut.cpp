@@ -1,6 +1,6 @@
 #include "Branch-and-Cut.h"
 
-vector<bool> Soluciona(vvd &G, int V, vvi &restricoes) {
+vvb Soluciona(vvd &G, int V, vvi &restricoes) {
     /*
         Recebe o TSPinit, retorna com o resolvedor cada variável binária
         da solução ótima encontrada  das arestas utilizadas.
@@ -15,8 +15,7 @@ vector<bool> Soluciona(vvd &G, int V, vvi &restricoes) {
         acesso ficar em tempo constante.
         Então o retorno em si fica como vector<vector<bool>>, indexado em 1.
 
-        Pensando também na descrição das variáveis binárias na matriz
-        ir preenchendo um vetor de grau de cada vértice (indexado em 1).
+        O grau de todo vértice daqui é 2.
     */
 
     IloEnv env;
@@ -37,7 +36,8 @@ vector<bool> Soluciona(vvd &G, int V, vvi &restricoes) {
     IloExpr objetivo(env);
 
     for(int i = 0; i < V; i++) {
-        for(int j = 0; j < V; j++) {
+        for(int j = i; j < V; j++) {
+            model.add(IloRange(env, 0, x[i][j] - x[j][i], 0));  // linhas = colunas
             objetivo += G[i][j]*x[i][j];
         }
     }
@@ -55,13 +55,25 @@ vector<bool> Soluciona(vvd &G, int V, vvi &restricoes) {
         cout << "Vish\n";
     }
 
+    vvb xFinal(V, vector<bool>(V));
+
+    for(int i = 0; i < V; i++) {
+        xFinal[i][i] = 0;
+        for(int j = i+1; j < V; j++) {
+            xFinal[i][j] = cplex.getValue(x[i][j]);
+            xFinal[j][i] = cplex.getValue(x[i][j]);
+            cout << xFinal[i][j] << ' ';
+        }
+        cout << endl;
+    }
+
+    cout << "Objetive: " << cplex.getObjValue();
+
     // Finalização
     cplex.clear();
     env.end();
 
-    vector<bool> placeholder;
-
-    return placeholder;
+    return xFinal;
     
     // Da pra retornar também o custo do resultado, pra retornar no CuttingPlanes caso seja ótimo
 }
@@ -77,7 +89,7 @@ double CuttingPlanes(vvd &G, int V) {
 
         // Vou supor primeiro que o M_MaxBack retorna um conjunto vazio de subtours
 
-        vvi provisorio;
+        vector<int> provisorio(V, 2);
         vvi S = MaxBackM(G, x, provisorio);
 
         if (S.size() == 0) {    // viável
