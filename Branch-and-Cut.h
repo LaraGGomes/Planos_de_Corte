@@ -8,7 +8,7 @@
 
 using namespace std;
 
-vvb Soluciona(vvd &, int, vvi &);
+double Soluciona(vvd &, int, vvi &, vvb &);
 double CuttingPlanes(vvd &, int );
 
 #endif
