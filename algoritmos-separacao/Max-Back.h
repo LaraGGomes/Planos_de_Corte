@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <algorithm>
-// #include <utility>
 
 using namespace std;
 typedef vector<vector<double>> vvd;

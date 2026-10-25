@@ -36,7 +36,7 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, int V, pair<int,int>
     double mincut_val = cut_val;
 
     vector<int> Vfinais;
-    vvi S;
+    vvi S(V - So.size() + 1);
     S[0] = So;
     int bestS = 0;
 
