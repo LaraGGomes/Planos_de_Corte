@@ -35,15 +35,18 @@ double Soluciona(vvd &G, int V, vvi &restricoes, vvb &xFinal) {
     }
 
     // Restrições para os subconjuntos violados
-    for(auto S : restricoes) {
-        IloExpr somatorioS; // todas arestas pra restrição desse subconjunto
+    for(int k = 0; k < restricoes.size(); k++) {
 
-        for(int v = 0; v < S.size(); v++) {
-            IloExpr arestasV = IloSum(x[S[v]]); // todas as arestas do vértice v ∈ S
+        IloExpr somatorioS(env); // todas arestas pra restrição desse subconjunto
+
+        for(int j = 0; j < restricoes[k].size(); j++) {
+            int v = restricoes[k][j];
+
+            IloExpr arestasV = IloSum(x[v]); // todas as arestas do vértice v ∈ S
 
             // tirar as arestas para vértices que ∈ S
-            for(int i = 0; i < S.size(); i++) {
-                arestasV -= x[S[v]][i];
+            for(int i = 0; i < restricoes[k].size(); i++) {
+                arestasV -= x[v][restricoes[k][i]];
             }
 
             somatorioS += arestasV;
@@ -71,12 +74,13 @@ double Soluciona(vvd &G, int V, vvi &restricoes, vvb &xFinal) {
 
     // Resolvendo
     IloCplex cplex(env);
+
+    cplex.setOut(env.getNullStream());      // limpeza para silenciar
+    cplex.setWarning(env.getNullStream());  // o terminal
+
     cplex.extract(model);
-    if (cplex.solve()) {
-        cout << "Ta funcionando\n";
-    }
-    else {
-        cout << "Vish\n";
+    if (!cplex.solve()) {
+        cout << "Deu problema no resolvedor\n";
     }
 
     for(int i = 0; i < V; i++) {
@@ -84,13 +88,10 @@ double Soluciona(vvd &G, int V, vvi &restricoes, vvb &xFinal) {
         for(int j = i+1; j < V; j++) {
             xFinal[i][j] = cplex.getValue(x[i][j]);
             xFinal[j][i] = cplex.getValue(x[i][j]);
-            cout << x[i][j] << ' ';
         }
-        cout << endl;
     }
 
     double val = cplex.getObjValue();
-    cout << "Objetive: " << val;
 
     // Finalização
     cplex.clear();
@@ -99,25 +100,50 @@ double Soluciona(vvd &G, int V, vvi &restricoes, vvb &xFinal) {
     return val;
 }
 
-double CuttingPlanes(vvd &G, int V) {
+double CuttingPlanes(vvd &G, int V, string m) {
     vvi R = {};
 
-    while (1) {
-        vvb x(V, vector<bool>(V));
-        double custo = Soluciona(G, V, R, x);
-
-        // Aqui fazer as opções de escolha entre algoritmos de separação
-        // Mas antes tenho que confirmar qual o tipo de retorno que cada uma da quando a solução é viável
-
-        // Vou supor primeiro que o M_MaxBack retorna um conjunto vazio de subtours
-
-        vvi S = MaxBackM(G, x);
-
-        if (S.size() == 0) {    // viável
-            // retornar valor do x*
+    if (m == "SimpleMinCut") {
+        cout << "Modo: Simple Min Cut\n";
+        while(1) {
+            vvb x(V, vector<bool>(V));
+            
+            double custo = Soluciona(G, V, R, x);
+            
+            // Mas antes tenho que confirmar qual o tipo de retorno que cada uma da quando a solução é viável
+            // Pro SimpleMinCut, vai ser retornado um conjunto com apenas 1 elemento, que é o vértice sem ter sido unido a nenhum outro
+           
+           vector<int> So = {0};
+           pair<int,int> vf;
+           
+           vector<int> S = SimpleMinCut(G, x);
+           
+           if(S.size() == 1) return custo; // viável
+           
+           else R.push_back(S);            // adiciona restrição
         }
-        else {
-            // Adiciona restrição em R
+    }
+    
+    else {
+        cout << "Modo: Multiple Max-Back\n";
+        while (1) {
+            vvb x(V, vector<bool>(V));
+    
+            double custo = Soluciona(G, V, R, x);
+    
+            // Pro MaxBackM, vai ser retornado um único subconjunto, formado pelo conjunto completo
+    
+            vvi S = MaxBackM(G, x);
+    
+            if (S.size() == 1) {    // viável
+                return custo;
+            }
+            else {
+                // Adiciona restrição em R
+                for(auto sub : S) {
+                    R.push_back(sub);
+                }
+            }
         }
     }
 }

@@ -4,7 +4,6 @@
 #include <limits>
 
 using namespace std;
-// typedef vector<vector<double>> vvd;
 
 #define INF numeric_limits<int>::max()
 
@@ -13,22 +12,21 @@ int main(int argc, char** argv) {
     auto data = Data(2, argv[1]);
     data.read();
 
+    string modo = argv[2];
     size_t n = data.getDimension();
 
-    // Grafo G vai estar indexado em 1 <- mudando de ideia sobre isso aq
-
-	vvd cost(n, vector<double>(n));
+	vvd G(n, vector<double>(n));
 	for (int i = 0; i < n; i++){
-        cost[i][i] = INF;
+        G[i][i] = INF;
 		for (int j = i+1; j < n; j++){
             double c = data.getDistance(i+1, j+1);
-            cost[i][j] = cost[j][i] = c;
+            G[i][j] = G[j][i] = c;
 		}
 	}
 
-    cout << "INF = " << INF << endl;
+    double custo = CuttingPlanes(G, n, modo);
 
-    // Soluciona(cost, n, {});
+    cout << "Melhor custo encontrado: " << custo << endl;
 
     return 0;
 }
