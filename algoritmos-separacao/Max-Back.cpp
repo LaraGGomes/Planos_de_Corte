@@ -6,6 +6,7 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, int V, pair<int,int>
 
     vector<double> grau(V);             // soma grau ponderado das arestas de cada vértice
     double cut_val = 0;
+    double cut_valR;
 
     for(int v : So) Vrestante[v] = false;
 
@@ -39,7 +40,7 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, int V, pair<int,int>
     vvi S(V - So.size() + 1);
     S[0] = So;
     int bestS = 0;
-
+    
     for(int k = 1; k <= V - S[0].size(); k++) {
         // inserir o de vértice com maior max-back no conjunto
         int i = 0;
@@ -47,14 +48,21 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, int V, pair<int,int>
         for(int j = i+1; j < V; j++) {
             if (Vrestante[j] && maxback_val[j] > maxback_val[i]) i = j;
         }
-
+        
         S[k] = S[k-1];
         S[k].push_back(i);
         Vrestante[i] = false;
+        
+        /*
+        Aqui basicamente eu to pegando o penúltimo resultado do cut_val para ser retornado no SimpleMinCut, já que o
+        último sempre vai ser 0, dado que é o corte do conjunto inteiro com o resto (que é vazio).
+        Mas eu quis manter essa iteração acontecendo por que é ela que retorna pro Max-Back Múltiplo o conjunto de todos os vértices 
+        */
+        if(k == V - S[0].size()) cut_valR = cut_val;
 
         // mudanças nos valores de corte e maxbacks com a adição do vértice
         cut_val += grau[i] - (2* maxback_val[i]);
-
+        
         for (int j = 0; j < V; j++) {
             if(Vrestante[j])
                 maxback_val[j] += (G[i][j]*x[i][j]);
@@ -69,13 +77,13 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, int V, pair<int,int>
         if(k >= (V - S[0].size() -1)) 
             Vfinais.push_back(i);
     }
-
-    vf = {Vfinais[0], Vfinais[1]};
+    
+    vf = {Vfinais[0], V > 2 ? Vfinais[1] : -1}; // v2 retorna -1 quando só tem 1 vértice inserido
     So = S[bestS];      // o subconjunto tá sendo retornado no próprio conjunto inicial (So)
 
-    return mincut_val;
+    return cut_valR;
 
-    // Retorna o valor do corte mínimo, o subconjunto e os últimos dois vértices adicionados
+    // Retorna o valor do último corte, o subconjunto e os últimos dois vértices adicionados
 }
 
 vvi MaxBackM(const vvd &G, const vvb &x) {
