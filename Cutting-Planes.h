@@ -1,5 +1,5 @@
-#ifndef BRANCH_AND_CUT_H
-#define BRANCH_AND_CUT_H
+#ifndef CUTTING_PLANES
+#define CUTTING_PLANES
 
 #include <ilcplex/cplex.h>
 #include <ilcplex/ilocplex.h>
