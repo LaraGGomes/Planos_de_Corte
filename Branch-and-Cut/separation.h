@@ -31,6 +31,10 @@ typedef struct{
 vector <vector<int> > MaxBack(double** x, int n);
 vector <vector<int> > MinCut(double** x, int n);
 
+vector<int> MB(double **, int, vector<int>);
+double MB(double **, int, pair<int,int> &);
+void Shrink(double **, int, pair<int,int>, vector<vector<int>> &);
+
 #endif
 
 //---------------------------------------------------------------------------
