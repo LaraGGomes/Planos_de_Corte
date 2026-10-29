@@ -1,4 +1,4 @@
-#include "Branch-and-Cut.h"
+#include "Cutting-Planes.h"
 
 double Soluciona(vvd &G, int V, vvi &restricoes, vvb &xFinal) {
     /*

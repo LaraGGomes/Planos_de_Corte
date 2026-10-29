@@ -40,7 +40,9 @@ void MyLazyCallback::main()
 	int l = 0;
 	for(int i = 0; i < n; i++) {
 		for(int j = i+1; j < n; j++) {
-			x_edge[i][j] = x_vals[l++];
+			double val = x_vals[l++];
+			x_edge[i][j] = val;
+			x_edge[j][i] = val;
 		}
 	}
 	

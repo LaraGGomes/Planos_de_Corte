@@ -71,3 +71,5 @@ Testing/
 .vscode
 .vs
 *.obj
+include/
+obj/

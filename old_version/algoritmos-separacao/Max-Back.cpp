@@ -24,7 +24,7 @@ double MaxBack(const vvd &G, vector<int> &So, const vvb &x, int V, pair<int,int>
 
         for(int i = 0; i < V; i++) {
             if(!Vrestante[i]) {             // maxback
-                soma += (G[i][j]*x[i][j]);  // verificar dps se ele multiplica por 1 (ou se ta * true)
+                soma += (G[i][j]*x[i][j]);
             }
 
             total += (G[i][j]*x[i][j]);     // total das arestas de cada vértice

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "leitor-instancias/src/Data.h"
-#include "Branch-and-Cut.h"
+#include "Cutting-Planes.h"
 #include <limits>
 
 using namespace std;
